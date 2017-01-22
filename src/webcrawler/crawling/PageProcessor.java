@@ -19,6 +19,11 @@ import webcrawler.queue.Page;
 import webcrawler.queue.QueueManager;
 import webcrawler.util.HtmlUtils;
 
+
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public class PageProcessor implements Callable<String>{
 
 	private int currentLevel;

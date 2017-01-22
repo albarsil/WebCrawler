@@ -3,6 +3,10 @@ package webcrawler.crawling.profiles;
 import webcrawler.crawling.CrawlingProfile;
 import webcrawler.pattern.HtmlPattern;
 
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public class GloboProfile extends CrawlingProfile{
 
 	@Override

@@ -10,9 +10,8 @@ import webcrawler.crawling.profiles.Profiles;
 import webcrawler.pattern.Pattern;
 
 /**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
  *
- * @author Alencar Rodrigo Hentges <alencarhentges@gmail.com>
- * @date 04/11/2016 - 20:48:36
  */
 public class DownloadPages {
 

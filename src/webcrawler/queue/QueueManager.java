@@ -7,6 +7,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public final class QueueManager {
 	
 	public static final int MAX_THREADS_WAITING = 2;

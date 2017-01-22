@@ -23,10 +23,10 @@ import webcrawler.pattern.Pattern;
 import webcrawler.queue.Page;
 import webcrawler.queue.QueueManager;
 
-/*
+
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
  *
- * @author Alencar Rodrigo Hentges <alencarhentges@gmail.com>
- * @date 04/11/2016 - 21:00:35
  */
 public class WebCrawler {
 
@@ -73,7 +73,7 @@ public class WebCrawler {
 				System.out.println("!!! - Can not get a Page from QueueManager!");
 				continue; // Try next
 			}
-			else if(visitedPages.contains(page.getUrl()) || !page.getUrl().contains(domain)){ // Only pages inside the domain
+			else if(visitedPages.contains(page.getUrl()) || !belongsTo(page.getUrl(), domain)){ // Only pages inside the domain
 				continue; // Try next
 			}
 			else{
@@ -146,6 +146,10 @@ public class WebCrawler {
 		System.out.println("-> nivel maximo: " + depth);
 		System.out.println("-> paginas baixadas: " + crawledPages);
 		System.out.println("-> paginas visitadas: " + visitedPages.size());
+	}
+	
+	private boolean belongsTo(String url, String site){
+		return url.startsWith("http://" + site) || url.startsWith("https://" + site);
 	}
 
 	public boolean isDone(){

@@ -1,5 +1,9 @@
 package webcrawler.queue;
 
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public class Page {
 
 	int deeph;

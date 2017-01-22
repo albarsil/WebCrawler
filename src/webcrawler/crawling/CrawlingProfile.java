@@ -5,6 +5,10 @@ import java.util.List;
 
 import webcrawler.pattern.HtmlPattern;
 
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public abstract class CrawlingProfile {
 
 	List<HtmlPattern> htmlPatterns = new ArrayList<>();

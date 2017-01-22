@@ -2,6 +2,10 @@ package webcrawler.crawling.profiles;
 
 import webcrawler.crawling.CrawlingProfile;
 
+/**
+ * @author  Allan de Barcelos Silva <albarsil@gmail.com>
+ *
+ */
 public enum Profiles {
 	GLOBO(1, new GloboProfile());
 
