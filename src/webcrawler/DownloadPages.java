@@ -15,12 +15,12 @@ import webcrawler.pattern.Pattern;
  */
 public class DownloadPages {
 
-	private static final int PROFILES = 1;
+	private static final int PROFILES = 2;
 
 	private static void printHelp(){
 		System.out.println("Deve-se passar somente 2 parametros!");
 		System.out.println("1 - A profundidade maxima desejada");
-		System.out.println("2 - O peril desejado (1- Globo)");
+		System.out.println("2 - O peril desejado (1- Globo, 2- BBC)");
 	}
 
 	private static boolean isNumber(String value) {  
