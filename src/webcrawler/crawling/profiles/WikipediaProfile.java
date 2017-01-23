@@ -15,7 +15,7 @@ public class WikipediaProfile  extends CrawlingProfile{
 	@Override
 	protected void configure() {
 		//Jsoup tag for "document.select(YOUR_TAG_HERE)"
-        HtmlPattern htmlPatternDiv = new HtmlPattern(".*<p>.*</p>.*", "div#mw-content-text");
+        HtmlPattern htmlPatternDiv = new HtmlPattern(".*", "div#mw-content-text");
        HtmlPattern htmlPatternParagrafo = new HtmlPattern(".*\\..*", "p");
 
 		addPattern(htmlPatternDiv);

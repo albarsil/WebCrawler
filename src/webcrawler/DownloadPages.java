@@ -92,8 +92,8 @@ public class DownloadPages {
 		int depth = Integer.valueOf(args[0]);
 
 		String mypath = ""; // Can set a custom folder
-		String folderPath = mypath + "resultados-" + cp.getName() + "/"; // Create the website folder
-		String filepath = folderPath + "/resultados.txt"; // The file inside website folder
+		String folderPath = mypath + "resultados"; // Create the website folder
+		String filepath = folderPath + "/resultados-" + cp.getName() + ".txt"; // The file inside website folder
 
 		new File(folderPath).mkdirs();
 		File file = new File(filepath);
