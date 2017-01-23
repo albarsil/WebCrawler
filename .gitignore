@@ -1,5 +1,6 @@
-/WebCrawlerAlencar/nbproject/
-/WebCrawlerAlencar/build/
-/WebCrawlerAlencar/dist/
-/WebCrawlerAlencar/resultados/
-/WebCrawlerAlencar/nbbuild.xml
+/nbproject/
+/build/
+/dist/
+/resultados/
+/nbbuild.xml
+/.settings/
