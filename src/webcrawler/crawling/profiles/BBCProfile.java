@@ -26,4 +26,12 @@ public class BBCProfile extends CrawlingProfile{
 	public String getSite() {
 		return "bbc.com/portuguese";
 	}
+
+	/* (non-Javadoc)
+	 * @see webcrawler.crawling.CrawlingProfile#getName()
+	 */
+	@Override
+	public String getName() {
+		return "BBC Brasil";
+	}
 }

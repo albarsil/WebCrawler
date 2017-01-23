@@ -25,12 +25,7 @@ public abstract class CrawlingProfile {
 		return htmlPatterns;
 	}
 
-	public String getName(){
-		if(getSite().contains("."))
-			return getSite().replace(".", ";").split(";")[0];
-		else
-			throw new NullPointerException();
-	}
+	public abstract String getName();
 
 	protected abstract void configure();
 

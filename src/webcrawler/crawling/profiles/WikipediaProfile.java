@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package webcrawler.crawling.profiles;
 
 import webcrawler.crawling.CrawlingProfile;
@@ -7,13 +10,13 @@ import webcrawler.pattern.HtmlPattern;
  * @author  Allan de Barcelos Silva <albarsil@gmail.com>
  *
  */
-public class GloboProfile extends CrawlingProfile{
+public class WikipediaProfile  extends CrawlingProfile{
 
 	@Override
 	protected void configure() {
 		//Jsoup tag for "document.select(YOUR_TAG_HERE)"
-		HtmlPattern htmlPatternDiv = new HtmlPattern(".*", "div.materia-conteudo");
-		HtmlPattern htmlPatternParagrafo = new HtmlPattern(".*\\..*", "p");
+        HtmlPattern htmlPatternDiv = new HtmlPattern(".*<p>.*</p>.*", "div#mw-content-text");
+       HtmlPattern htmlPatternParagrafo = new HtmlPattern(".*\\..*", "p");
 
 		addPattern(htmlPatternDiv);
 		addPattern(htmlPatternParagrafo);
@@ -21,7 +24,7 @@ public class GloboProfile extends CrawlingProfile{
 
 	@Override
 	public String getSite() {
-		return "g1.globo.com";
+		return "pt.wikipedia.org";
 	}
 
 	/* (non-Javadoc)
@@ -29,8 +32,6 @@ public class GloboProfile extends CrawlingProfile{
 	 */
 	@Override
 	public String getName() {
-		return "G1 Globo";
+		return "Wikipedia Brasil";
 	}
-
-	
 }
