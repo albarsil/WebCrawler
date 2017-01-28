@@ -66,13 +66,17 @@ public class PageProcessor implements Callable<String>{
 			return null;
 		}
 		
-		String contents = getContentToSave(html, htmlPattern);
+		if(html == null)
+			return "";
+		
+		// Check for new child pages
 		List<Page> child = createChildPages(html, urlPattern);
 		
 		if(child != null && !child.isEmpty())
 			QueueManager.push(child);
 		
-		return contents;
+		// Return the textual content
+		return getContentToSave(html, htmlPattern);
 	}
 
 

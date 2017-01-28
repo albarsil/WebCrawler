@@ -1,9 +1,11 @@
 package webcrawler;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,15 +59,14 @@ public class WebCrawler {
 
 
 		//create thread pool
-		ExecutorService crawlService = Executors.newCachedThreadPool();
+		ExecutorService crawlService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		Page page = null;
 
-		while(!QueueManager.isEmpty() && depth <= MAX_LEVEL){
-			Page page = null;
+		do{
 
 			try {
 				page = QueueManager.pull();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 				Logger.getLogger(WebCrawler.class.getName()).log(Level.SEVERE, null, e);
 			}
 
@@ -91,31 +92,12 @@ public class WebCrawler {
 							null)
 					);
 
-			crawledPages++;
 
 			while(!future.isDone());
-
 			try {
-				Writer writer = new BufferedWriter(
-						new OutputStreamWriter(
-								new FileOutputStream(
-										outputFilepath,
-										true
-										),
-								"UTF-8"
-								)
-						);
-
-				String text = future.get();
-				if(text != null && !text.isEmpty()){
-					writer.write(text);
-				}
-
-				writer.flush();
-				writer.close();
-
+				write(future.get());
+				crawledPages++;
 			} catch (IOException | InterruptedException | ExecutionException e) {
-				e.printStackTrace();
 				Logger.getLogger(WebCrawler.class.getName()).log(Level.SEVERE, null, e);
 			}
 
@@ -123,10 +105,10 @@ public class WebCrawler {
 				try {
 					QueueManager.await();
 				} catch (InterruptedException | BrokenBarrierException e) {
-					e.printStackTrace();
 					Logger.getLogger(WebCrawler.class.getName()).log(Level.SEVERE, null, e);
 				}
-		}
+
+		}while(!QueueManager.isEmpty() && depth <= MAX_LEVEL);
 
 		//shut down when the last url have been added to the pool
 		crawlService.shutdown();
@@ -141,13 +123,33 @@ public class WebCrawler {
 
 		isDone = crawlService.isTerminated();
 	}
+	
+	private void write(String text) throws IOException{
+		
+		Writer writer = new BufferedWriter(
+				new OutputStreamWriter(
+						new FileOutputStream(
+								outputFilepath,
+								true
+								),
+						"UTF-8"
+						)
+				);
+
+		if(text != null && !text.isEmpty()){
+			writer.write(text);
+		}
+
+		writer.flush();
+		writer.close();
+	}
 
 	public void printResults(){
 		System.out.println("-> nivel maximo: " + depth);
 		System.out.println("-> paginas baixadas: " + crawledPages);
 		System.out.println("-> paginas visitadas: " + visitedPages.size());
 	}
-	
+
 	private boolean belongsTo(String url, String site){
 		return url.startsWith("http://" + site) || url.startsWith("https://" + site);
 	}
