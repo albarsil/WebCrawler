@@ -7,9 +7,9 @@ import webcrawler.crawling.CrawlingProfile;
  *
  */
 public enum Profiles {
-	GLOBO(1, new GloboProfile()),
+	WIKIPEDIA(1, new WikipediaProfile()),
 	BBC(2, new BBCProfile()),
-	WIKIPEDIA(3, new WikipediaProfile());
+	GLOBO(3, new GloboProfile());
 
 	int num;
 	CrawlingProfile profile;
@@ -34,11 +34,11 @@ public enum Profiles {
 	public static Profiles from(int num){
 		switch (num) {
 		case 1:
-			return GLOBO;
+			return WIKIPEDIA;
 		case 2:
 			return BBC;
 		case 3:
-			return WIKIPEDIA;
+			return GLOBO;
 
 		default:
 			return null;

@@ -1,10 +1,16 @@
 package webcrawler.crawling;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +30,7 @@ import webcrawler.util.HtmlUtils;
  * @author  Allan de Barcelos Silva <albarsil@gmail.com>
  *
  */
-public class PageProcessor implements Callable<String>{
+public class PageProcessor{
 
 	private int currentLevel;
 	private String currenUrl;
@@ -44,8 +50,7 @@ public class PageProcessor implements Callable<String>{
 		this.htmlPattern = htmlPattern;
 	}
 
-	@Override
-	public String call() throws Exception {
+	public String process() {
 		
 		System.out.println(">> Level: " + currentLevel + " >> Crawling the page: " + currenUrl);
 		
@@ -61,7 +66,7 @@ public class PageProcessor implements Callable<String>{
 		Document html = null;
 		
 		try {
-			html = Jsoup.connect(currenUrl).get();
+			html = Jsoup.parse(getHtml(currenUrl));
 		} catch (Exception e) {
 			return null;
 		}
@@ -77,6 +82,19 @@ public class PageProcessor implements Callable<String>{
 		
 		// Return the textual content
 		return getContentToSave(html, htmlPattern);
+	}
+	
+	private String getHtml(String address) throws IOException{
+        URL url = new URL(address);
+        URLConnection con = url.openConnection();
+		BufferedReader reader=new BufferedReader(new InputStreamReader(con.getInputStream()));
+		StringBuilder buf=new StringBuilder();
+		String line=null;
+		while ((line=reader.readLine()) != null) {
+		  buf.append(line);
+		}
+		
+		return buf.toString();
 	}
 
 

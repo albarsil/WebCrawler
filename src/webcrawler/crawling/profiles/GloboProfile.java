@@ -12,10 +12,12 @@ public class GloboProfile extends CrawlingProfile{
 	@Override
 	protected void configure() {
 		//Jsoup tag for "document.select(YOUR_TAG_HERE)"
-		HtmlPattern htmlPatternDiv = new HtmlPattern(".*", "div.materia-conteudo");
+		HtmlPattern htmlPatternDiv = new HtmlPattern(".*", "div.mc-column content-text active-extra-styles");
+		HtmlPattern htmlPattern2 = new HtmlPattern(".*\\..*", "div");
 		HtmlPattern htmlPatternParagrafo = new HtmlPattern(".*\\..*", "p");
 
 		addPattern(htmlPatternDiv);
+		addPattern(htmlPattern2);
 		addPattern(htmlPatternParagrafo);
 	}
 
