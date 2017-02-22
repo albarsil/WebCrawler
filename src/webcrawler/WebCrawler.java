@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.logging.Level;
@@ -54,9 +55,14 @@ public class WebCrawler {
 	}
 
 	private boolean shouldVisit(String url){
-		return !database.contains(url) || 
-				!FILTERS.matcher(url).matches() && 
-				(url.startsWith("http://" + domain) || url.startsWith("https://" + domain));
+		try {
+			return !database.contains(url) || 
+					!FILTERS.matcher(url).matches() && 
+					(url.startsWith("http://" + domain) || url.startsWith("https://" + domain));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public void crawl(String startUrl){
@@ -89,6 +95,8 @@ public class WebCrawler {
 				crawledPages++;
 				database.insert(page.getUrl(), depth);
 			} catch (IOException e) {
+				Logger.getLogger(WebCrawler.class.getName()).log(Level.SEVERE, null, e);
+			} catch (SQLException e) {
 				Logger.getLogger(WebCrawler.class.getName()).log(Level.SEVERE, null, e);
 			}
 

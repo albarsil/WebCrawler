@@ -2,12 +2,16 @@ package webcrawler;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import webcrawler.crawling.CrawlingProfile;
 import webcrawler.crawling.profiles.Profiles;
 import webcrawler.pattern.Pattern;
+import webcrawler.sqlite.Database;
 
 /**
  * @author  Allan de Barcelos Silva <albarsil@gmail.com>
@@ -106,6 +110,12 @@ public class DownloadPages {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+		}
+		
+		try {
+			Database.getInstance().clear();
+		} catch (SQLException e) {
+			Logger.getLogger(DownloadPages.class.getName()).log(Level.SEVERE, null, e);
 		}
 
 		WebCrawler webCrawler = new WebCrawler(urlPattern, cp, depth, filepath);
