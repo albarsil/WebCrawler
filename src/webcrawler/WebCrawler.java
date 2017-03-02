@@ -6,15 +6,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-import webcrawler.crawling.CrawlingProfile;
 import webcrawler.crawling.PageProcessor;
-import webcrawler.pattern.HtmlPattern;
-import webcrawler.pattern.Pattern;
 import webcrawler.queue.Page;
 import webcrawler.queue.QueueManager;
 import webcrawler.sqlite.Database;
@@ -33,8 +30,6 @@ public class WebCrawler {
 					+ "|wav|avi|mov|mpeg|ram|m4v|pdf" 
 					+ "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-	private final Pattern urlPattern;
-	private final List<HtmlPattern> htmlPattern;
 	private final int MAX_LEVEL;
 	private int depth = 1;
 	private int crawledPages = 0;
@@ -42,12 +37,11 @@ public class WebCrawler {
 	private String domain;
 	private Database database;
 
-	public WebCrawler(Pattern urlPattern, CrawlingProfile crawlingProfile, int maxNivel, String outputFilepah){
-		this.urlPattern = urlPattern;
-		this.htmlPattern = crawlingProfile.getPatterns();
+	public WebCrawler(String domain, int maxNivel, String outputFilepah){
+		this.domain = domain;
+		
 		this.MAX_LEVEL = maxNivel;
 		this.outputFilepath = outputFilepah;
-		this.domain = crawlingProfile.getSite();
 		this.database = Database.getInstance();
 
 		if(outputFilepah == null || maxNivel < 1)
@@ -87,9 +81,7 @@ public class WebCrawler {
 			String text = new PageProcessor(
 							depth,
 							page.getUrl(),
-							urlPattern,
-							htmlPattern,
-							null).process();
+							domain).process();
 			try {
 				write(text);
 				crawledPages++;

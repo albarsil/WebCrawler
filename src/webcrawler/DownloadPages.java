@@ -7,10 +7,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-import webcrawler.crawling.CrawlingProfile;
-import webcrawler.crawling.profiles.Profiles;
-import webcrawler.pattern.Pattern;
 import webcrawler.sqlite.Database;
 
 /**
@@ -22,14 +20,7 @@ public class DownloadPages {
 	private static void printHelp(){
 		System.out.println("Deve-se passar somente 2 parametros!");
 		System.out.println("1 - A profundidade maxima desejada");
-		
-		StringBuilder message = new StringBuilder();
-		
-		for(Profiles profile : Profiles.values()){
-			message.append(profile.getNum() + "- " + profile.getProfile().getName() + " ");
-		}
-		
-		System.out.println(String.format("2 - O peril desejado (%s)", message.toString()));
+		System.out.println("2 - O endereço para iniciar o crawling");
 	}
 
 	private static boolean isNumber(String value) {  
@@ -41,28 +32,11 @@ public class DownloadPages {
 		}  
 	}
 
-	private static String[] setDefaultProfile(String[] args){
-		return new String[]{args[0], "1"};
-	}
 
 	private static void validateArgs(String[] args){
 		switch (args.length) {
-		case 1:
-			if(!isNumber(args[0])){
-				printHelp();
-				System.exit(0);
-			}
-
-			break;
 		case 2:
-			if(!isNumber(args[0]) || !isNumber(args[1])){
-				printHelp();
-				System.exit(0);
-			}
-
-			int option = Integer.parseInt(args[1]);
-
-			if(option > Profiles.values().length || option < 1){
+			if(!isNumber(args[0])){
 				printHelp();
 				System.exit(0);
 			}
@@ -78,26 +52,21 @@ public class DownloadPages {
 
 
 	public static void main(String[] args) {
-
+		
 		validateArgs(args);
-
-		// Set default profile
-		if(args.length == 1){
-			args = setDefaultProfile(args);
-		}
-
+		
 		Instant initialTime = Instant.now();
 
-		CrawlingProfile cp = Profiles.from(Integer.parseInt(args[1])).getProfile();
-
-		String startURL = "http://" + cp.getSite();
-		Pattern urlPattern = new Pattern("http.*" + cp.getSite() + ".*");
-
 		int depth = Integer.valueOf(args[0]);
+		
+		if(!Pattern.compile("(https|http).*\\.com").matcher(args[1]).matches())
+			throw new IllegalArgumentException("Check start url address");
+		
+		String domain = args[1].split("\\.")[1];
 
 		String mypath = ""; // Can set a custom folder
 		String folderPath = mypath + "resultados"; // Create the website folder
-		String filepath = folderPath + "/resultados-" + cp.getName() + ".txt"; // The file inside website folder
+		String filepath = folderPath + "/resultados-" + domain + ".txt"; // The file inside website folder
 
 		new File(folderPath).mkdirs();
 		File file = new File(filepath);
@@ -118,8 +87,8 @@ public class DownloadPages {
 			Logger.getLogger(DownloadPages.class.getName()).log(Level.SEVERE, null, e);
 		}
 
-		WebCrawler webCrawler = new WebCrawler(urlPattern, cp, depth, filepath);
-		webCrawler.crawl(startURL);
+		WebCrawler webCrawler = new WebCrawler(domain, depth, filepath);
+		webCrawler.crawl(args[1]);
 
 		System.out.println();
 		System.out.println("WebCrawler finalizado!");
